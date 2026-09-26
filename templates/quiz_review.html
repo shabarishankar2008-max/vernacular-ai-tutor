@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="result">
+
+    <h1>My Quiz Answers</h1>
+
+    {% for item in review %}
+
+    <div style="
+        background: white;
+        padding: 20px;
+        margin: 20px 0;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    ">
+
+        <h3>
+            Question {{ forloop.counter }}
+        </h3>
+
+        <p>
+            <strong>{{ item.question }}</strong>
+        </p>
+
+        <p>
+            <strong>Your Answer:</strong>
+            {{ item.user_answer }}
+        </p>
+
+        <p>
+            <strong>Correct Answer:</strong>
+            {{ item.correct_answer }}
+        </p>
+
+        {% if item.is_correct %}
+
+            <p style="color: green; font-weight: bold;">
+                ✓ Correct
+            </p>
+
+        {% else %}
+
+            <p style="color: red; font-weight: bold;">
+                ✗ Incorrect
+            </p>
+
+        {% endif %}
+
+        <p>
+            <strong>Explanation:</strong>
+            {{ item.explanation }}
+        </p>
+
+    </div>
+
+    {% endfor %}
+
+    <div style="margin-top: 25px;">
+
+        <a class="button" href="{% url 'quiz' %}">
+            Take Another Quiz
+        </a>
+
+        <a class="button secondary" href="{% url 'dashboard' %}">
+            Dashboard
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

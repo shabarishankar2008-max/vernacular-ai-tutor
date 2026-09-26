@@ -1,0 +1,368 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+
+    .tutor-page {
+        max-width: 900px;
+        margin: auto;
+    }
+
+    .tutor-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .tutor-header .ai-icon {
+        width: 70px;
+        height: 70px;
+        margin: 0 auto 15px;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 35px;
+        box-shadow: 0 10px 25px rgba(79, 70, 229, 0.25);
+    }
+
+    .tutor-header h1 {
+        font-size: 32px;
+        margin-bottom: 8px;
+    }
+
+    .tutor-header p {
+        color: #6b7280;
+        font-size: 16px;
+    }
+
+    /* CHAT BOX */
+
+    .chat-container {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 22px;
+        overflow: hidden;
+        box-shadow: 0 10px 35px rgba(0, 0, 0, 0.06);
+    }
+
+    .chat-top {
+        padding: 18px 25px;
+        border-bottom: 1px solid #e5e7eb;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .online-dot {
+        width: 11px;
+        height: 11px;
+        background: #22c55e;
+        border-radius: 50%;
+    }
+
+    .chat-top strong {
+        font-size: 16px;
+    }
+
+    .online-text {
+        color: #22c55e;
+        font-size: 13px;
+        margin-left: auto;
+    }
+
+    /* MESSAGES */
+
+    .chat {
+        padding: 25px;
+        min-height: 300px;
+        max-height: 520px;
+        overflow-y: auto;
+        background: #f8fafc;
+    }
+
+    .message {
+        max-width: 78%;
+        padding: 15px 18px;
+        margin-bottom: 18px;
+        border-radius: 18px;
+        line-height: 1.6;
+        white-space: normal;
+    }
+
+    .message.user {
+        margin-left: auto;
+        background: #4f46e5;
+        color: white;
+        border-bottom-right-radius: 5px;
+    }
+
+    .message.bot {
+        margin-right: auto;
+        background: white;
+        color: #374151;
+        border: 1px solid #e5e7eb;
+        border-bottom-left-radius: 5px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.03);
+    }
+
+    .message-label {
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 5px;
+        opacity: 0.75;
+    }
+
+    /* INPUT AREA */
+
+    .chat-form {
+        padding: 20px;
+        background: white;
+        border-top: 1px solid #e5e7eb;
+    }
+
+    .input-wrapper {
+        display: flex;
+        gap: 12px;
+        align-items: flex-end;
+    }
+
+    .chat-form textarea {
+        flex: 1;
+        margin: 0;
+        min-height: 55px;
+        max-height: 150px;
+        resize: vertical;
+        border-radius: 14px;
+        padding: 15px;
+        border: 1px solid #d1d5db;
+        font-family: inherit;
+    }
+
+    .chat-form textarea:focus {
+        border-color: #6366f1;
+        outline: none;
+        box-shadow: 0 0 0 3px #eef2ff;
+    }
+
+    .send-button {
+        height: 55px;
+        padding: 0 25px;
+        border: none;
+        border-radius: 14px;
+        background: linear-gradient(135deg, #4f46e5, #6366f1);
+        color: white;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .send-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(79, 70, 229, 0.25);
+    }
+
+    /* SUGGESTIONS */
+
+    .suggestions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 18px;
+    }
+
+    .suggestion {
+        padding: 9px 14px;
+        background: #f1f5f9;
+        border: 1px solid #e2e8f0;
+        border-radius: 20px;
+        color: #475569;
+        font-size: 13px;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 650px) {
+
+        .tutor-header h1 {
+            font-size: 27px;
+        }
+
+        .message {
+            max-width: 90%;
+        }
+
+        .input-wrapper {
+            flex-direction: column;
+        }
+
+        .chat-form textarea {
+            width: 100%;
+        }
+
+        .send-button {
+            width: 100%;
+        }
+
+    }
+
+</style>
+
+
+<div class="tutor-page">
+
+    <!-- HEADER -->
+
+    <div class="tutor-header">
+
+        <div class="ai-icon">
+            🤖
+        </div>
+
+        <h1>
+            VernacularAI Tutor
+        </h1>
+
+        <p>
+            Your personal English learning assistant
+        </p>
+
+    </div>
+
+
+    <!-- CHAT -->
+
+    <div class="chat-container">
+
+        <div class="chat-top">
+
+            <div class="online-dot"></div>
+
+            <strong>
+                AI English Tutor
+            </strong>
+
+            <span class="online-text">
+                ● Ready to help
+            </span>
+
+        </div>
+
+
+        <div class="chat">
+
+            {% for item in messages %}
+
+                <!-- USER MESSAGE -->
+
+                <div class="message user">
+
+                    <div class="message-label">
+                        You
+                    </div>
+
+                    {{ item.user_message|linebreaksbr }}
+
+                </div>
+
+
+                <!-- AI MESSAGE -->
+
+                <div class="message bot">
+
+                    <div class="message-label">
+                        🤖 VernacularAI
+                    </div>
+
+                    {{ item.tutor_response|linebreaksbr }}
+
+                </div>
+
+            {% empty %}
+
+                <!-- FIRST AI MESSAGE -->
+
+                <div class="message bot">
+
+                    <div class="message-label">
+                        🤖 VernacularAI
+                    </div>
+
+                    வணக்கம்! 👋
+
+                    <br><br>
+
+                    I'm your English learning assistant.
+
+                    <br><br>
+
+                    You can ask me about:
+
+                    <br>
+
+                    • English grammar
+                    <br>
+                    • Vocabulary
+                    <br>
+                    • Sentence correction
+                    <br>
+                    • Tamil → English translation
+                    <br>
+                    • Conversation practice
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- INPUT -->
+
+        <form method="post" class="chat-form">
+
+            {% csrf_token %}
+
+            <div class="input-wrapper">
+
+                <textarea
+                    name="message"
+                    required
+                    placeholder="Ask something like: Present tense என்ன?"
+                ></textarea>
+
+                <button
+                    class="send-button"
+                    type="submit"
+                >
+                    Send 🚀
+                </button>
+
+            </div>
+
+
+            <div class="suggestions">
+
+                <span class="suggestion">
+                    Present tense என்ன?
+                </span>
+
+                <span class="suggestion">
+                    Correct my sentence
+                </span>
+
+                <span class="suggestion">
+                    Teach me vocabulary
+                </span>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

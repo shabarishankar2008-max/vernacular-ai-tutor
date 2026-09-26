@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- HERO SECTION -->
+
+<section class="hero">
+
+    <h1>
+        Learn English with AI 🤖
+    </h1>
+
+    <p>
+        Improve your English grammar, practice conversations,
+        and test your knowledge with a personal AI tutor
+        designed for Tamil-speaking students.
+    </p>
+
+    <div style="margin-top: 25px;">
+
+        <a href="{% url 'tutor' %}" class="button"
+           style="background: white; color: #4f46e5 !important; margin-right: 10px;">
+            Start Learning →
+        </a>
+
+        <a href="{% url 'quiz' %}" class="button"
+           style="background: rgba(255,255,255,0.15);">
+            Take a Quiz
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- FEATURES -->
+
+<div class="cards">
+
+    <!-- AI TUTOR -->
+
+    <div class="card">
+
+        <div class="card-icon">
+            🤖
+        </div>
+
+        <h2>
+            AI Tutor
+        </h2>
+
+        <p>
+            Ask English-learning questions and get simple
+            explanations with Tamil meanings.
+        </p>
+
+        <a href="{% url 'tutor' %}" class="button">
+            Open AI Tutor
+        </a>
+
+    </div>
+
+
+    <!-- QUIZ -->
+
+    <div class="card">
+
+        <div class="card-icon">
+            📝
+        </div>
+
+        <h2>
+            Practice Quiz
+        </h2>
+
+        <p>
+            Test your grammar knowledge with randomly
+            selected questions and instant results.
+        </p>
+
+        <a href="{% url 'quiz' %}" class="button">
+            Start Quiz
+        </a>
+
+    </div>
+
+
+    <!-- DASHBOARD -->
+
+    <div class="card">
+
+        <div class="card-icon">
+            📊
+        </div>
+
+        <h2>
+            My Progress
+        </h2>
+
+        <p>
+            View your quiz performance and track your
+            learning progress.
+        </p>
+
+        <a href="{% url 'dashboard' %}" class="button">
+            View Dashboard
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- WHY SECTION -->
+
+<div style="
+    margin-top: 45px;
+    background: white;
+    padding: 35px;
+    border-radius: 20px;
+    border: 1px solid #e5e7eb;
+">
+
+    <h2 style="margin-bottom: 15px;">
+        🌐 Learn in Your Language
+    </h2>
+
+    <p style="
+        color: #6b7280;
+        line-height: 1.7;
+        max-width: 800px;
+    ">
+
+        VernacularAI helps students understand English concepts
+        through simple explanations and Tamil meanings.
+        Practice regularly, identify your mistakes, and
+        improve your English step by step.
+
+    </p>
+
+</div>
+
+{% endblock %}

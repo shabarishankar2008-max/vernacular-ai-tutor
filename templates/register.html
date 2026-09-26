@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="form-card">
+    <h1>Create Student Profile</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label>Name</label>
+        <input name="name" required placeholder="Enter your name">
+
+        <label>Native Language</label>
+        <select name="native_language">
+            <option>Tamil</option>
+            <option>Hindi</option>
+            <option>Telugu</option>
+            <option>Kannada</option>
+            <option>Malayalam</option>
+            <option>Bengali</option>
+        </select>
+
+        <label>English Level</label>
+        <select name="level">
+            <option>Beginner</option>
+            <option>Intermediate</option>
+            <option>Advanced</option>
+        </select>
+
+        <button class="button" type="submit">Create Profile</button>
+    </form>
+</div>
+{% endblock %}

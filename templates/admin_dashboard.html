@@ -1,0 +1,313 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+    <div style="
+        margin-bottom: 30px;
+        padding: 35px;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        color: white;
+    ">
+
+        <h1>Admin Dashboard</h1>
+
+        <p>
+            VernacularAI learning platform database
+        </p>
+
+    </div>
+
+    <!-- STATISTICS -->
+
+    <div style="
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 20px;
+        margin-bottom: 40px;
+    ">
+
+        <div style="
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+        ">
+            <h3>Total Students</h3>
+
+            <div style="
+                font-size: 35px;
+                font-weight: bold;
+                color: #4f46e5;
+            ">
+                {{ total_students }}
+            </div>
+        </div>
+
+        <div style="
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+        ">
+            <h3>Quiz Attempts</h3>
+
+            <div style="
+                font-size: 35px;
+                font-weight: bold;
+                color: #4f46e5;
+            ">
+                {{ total_quizzes }}
+            </div>
+        </div>
+
+        <div style="
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+        ">
+            <h3>AI Questions</h3>
+
+            <div style="
+                font-size: 35px;
+                font-weight: bold;
+                color: #4f46e5;
+            ">
+                {{ total_messages }}
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- STUDENT DATABASE -->
+
+    <div style="
+        background: white;
+        padding: 25px;
+        border-radius: 15px;
+        margin-bottom: 35px;
+    ">
+
+        <h2>👥 Student Database</h2>
+
+        <div style="overflow-x: auto;">
+
+            <table style="
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            ">
+
+                <tr style="background: #f3f4f6;">
+
+                    <th style="padding: 12px;">Name</th>
+                    <th style="padding: 12px;">Language</th>
+                    <th style="padding: 12px;">Level</th>
+                    <th style="padding: 12px;">Grammar</th>
+                    <th style="padding: 12px;">Vocabulary</th>
+                    <th style="padding: 12px;">Joined</th>
+
+                </tr>
+
+                {% for student in students %}
+
+                <tr style="border-bottom: 1px solid #e5e7eb;">
+
+                    <td style="padding: 12px;">
+                        <strong>{{ student.name }}</strong>
+                    </td>
+
+                    <td style="padding: 12px;">
+                        {{ student.native_language }}
+                    </td>
+
+                    <td style="padding: 12px;">
+                        {{ student.level }}
+                    </td>
+
+                    <td style="padding: 12px;">
+                        {{ student.grammar_score }}%
+                    </td>
+
+                    <td style="padding: 12px;">
+                        {{ student.vocabulary_score }}%
+                    </td>
+
+                    <td style="padding: 12px;">
+                        {{ student.created_at|date:"d M Y" }}
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+                    <td colspan="6" style="
+                        padding: 25px;
+                        text-align: center;
+                    ">
+                        No students registered yet.
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- QUIZ RESULTS -->
+
+    <div style="
+        background: white;
+        padding: 25px;
+        border-radius: 15px;
+        margin-bottom: 35px;
+    ">
+
+        <h2>📝 Quiz Results</h2>
+
+        <div style="overflow-x: auto;">
+
+            <table style="
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            ">
+
+                <tr style="background: #f3f4f6;">
+
+                    <th style="padding: 12px;">Student</th>
+                    <th style="padding: 12px;">Quiz</th>
+                    <th style="padding: 12px;">Score</th>
+                    <th style="padding: 12px;">Percentage</th>
+                    <th style="padding: 12px;">Date</th>
+
+                </tr>
+
+                {% for result in quiz_results %}
+
+                <tr style="border-bottom: 1px solid #e5e7eb;">
+
+                    <td style="padding: 12px;">
+                        {{ result.student.name }}
+                    </td>
+
+                    <td style="padding: 12px;">
+                        {{ result.topic }}
+                    </td>
+
+                    <td style="padding: 12px;">
+                        {{ result.score }} / {{ result.total }}
+                    </td>
+
+                    <td style="padding: 12px;">
+                        {{ result.percentage }}%
+                    </td>
+
+                    <td style="padding: 12px;">
+                        {{ result.created_at|date:"d M Y H:i" }}
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+                    <td colspan="5" style="
+                        padding: 25px;
+                        text-align: center;
+                    ">
+                        No quiz attempts yet.
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- AI TUTOR ACTIVITY -->
+
+    <div style="
+        background: white;
+        padding: 25px;
+        border-radius: 15px;
+        margin-bottom: 35px;
+    ">
+
+        <h2>🤖 AI Tutor Activity</h2>
+
+        <div style="overflow-x: auto;">
+
+            <table style="
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            ">
+
+                <tr style="background: #f3f4f6;">
+
+                    <th style="padding: 12px;">Student</th>
+                    <th style="padding: 12px;">Question</th>
+                    <th style="padding: 12px;">Date</th>
+
+                </tr>
+
+                {% for message in chat_messages %}
+
+                <tr style="border-bottom: 1px solid #e5e7eb;">
+
+                    <td style="padding: 12px;">
+                        {{ message.student.name }}
+                    </td>
+
+                    <td style="padding: 12px;">
+                        {{ message.user_message|truncatechars:80 }}
+                    </td>
+
+                    <td style="padding: 12px;">
+                        {{ message.created_at|date:"d M Y H:i" }}
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+                    <td colspan="3" style="
+                        padding: 25px;
+                        text-align: center;
+                    ">
+                        No AI tutor activity yet.
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <div style="text-align: center; margin-bottom: 30px;">
+
+        <a class="button" href="{% url 'home' %}">
+            ← Back to Home
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

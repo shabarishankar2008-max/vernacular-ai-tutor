@@ -1,0 +1,466 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+
+    .quiz-page {
+        max-width: 900px;
+        margin: auto;
+    }
+
+    /* =========================
+       DIFFICULTY SELECTION
+       ========================= */
+
+    .quiz-hero {
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        color: white;
+        padding: 40px;
+        border-radius: 24px;
+        margin-bottom: 30px;
+        text-align: center;
+        box-shadow: 0 15px 35px rgba(79, 70, 229, 0.20);
+    }
+
+    .quiz-hero h1 {
+        font-size: 34px;
+        margin-bottom: 10px;
+    }
+
+    .quiz-hero p {
+        margin: 0;
+        opacity: 0.9;
+        font-size: 16px;
+    }
+
+    .difficulty-title {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 22px;
+    }
+
+    .difficulty-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+
+    .difficulty-card {
+        background: white;
+        padding: 30px 20px;
+        border-radius: 20px;
+        border: 1px solid #e5e7eb;
+        text-align: center;
+        text-decoration: none;
+        color: #1f2937;
+        transition: 0.25s;
+        box-shadow: 0 5px 18px rgba(0,0,0,0.04);
+    }
+
+    .difficulty-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.10);
+    }
+
+    .difficulty-icon {
+        font-size: 38px;
+        margin-bottom: 15px;
+    }
+
+    .difficulty-card h2 {
+        margin-bottom: 8px;
+        font-size: 21px;
+    }
+
+    .difficulty-card p {
+        color: #6b7280;
+        margin-bottom: 20px;
+    }
+
+    .difficulty-button {
+        display: inline-block;
+        padding: 10px 20px;
+        border-radius: 10px;
+        color: white;
+        font-weight: 600;
+    }
+
+    .beginner .difficulty-button {
+        background: #16a34a;
+    }
+
+    .moderate .difficulty-button {
+        background: #eab308;
+        color: #422006;
+    }
+
+    .advanced .difficulty-button {
+        background: #dc2626;
+    }
+
+
+    /* =========================
+       QUIZ QUESTIONS
+       ========================= */
+
+    .quiz-header {
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        color: white;
+        padding: 30px;
+        border-radius: 22px;
+        margin-bottom: 25px;
+    }
+
+    .quiz-header h1 {
+        margin: 0 0 8px;
+        font-size: 30px;
+    }
+
+    .quiz-header p {
+        margin: 0;
+        opacity: 0.9;
+    }
+
+    .difficulty-badge {
+        display: inline-block;
+        margin-top: 15px;
+        padding: 7px 14px;
+        border-radius: 20px;
+        background: rgba(255,255,255,0.18);
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .quiz-card {
+        background: white;
+        padding: 30px;
+        border-radius: 22px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+    }
+
+    .question {
+        padding: 25px 0;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .question:first-child {
+        padding-top: 0;
+    }
+
+    .question:last-child {
+        border-bottom: none;
+    }
+
+    .question-text {
+        font-size: 18px;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 16px;
+        line-height: 1.5;
+    }
+
+    .question-number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: #eef2ff;
+        color: #4f46e5;
+        margin-right: 10px;
+        font-size: 15px;
+    }
+
+    .options {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .option {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 14px 16px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .option:hover {
+        background: #eef2ff;
+        border-color: #818cf8;
+    }
+
+    .option input {
+        width: 18px;
+        height: 18px;
+        margin: 0 12px 0 0;
+        accent-color: #4f46e5;
+    }
+
+    .option:has(input:checked) {
+        background: #eef2ff;
+        border-color: #6366f1;
+        color: #3730a3;
+        font-weight: 600;
+    }
+
+    .submit-area {
+        padding-top: 25px;
+        text-align: center;
+    }
+
+    .submit-button {
+        border: none;
+        padding: 14px 30px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #4f46e5, #6366f1);
+        color: white;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .submit-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(79,70,229,0.25);
+    }
+
+
+    /* =========================
+       MOBILE
+       ========================= */
+
+    @media (max-width: 750px) {
+
+        .difficulty-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .quiz-hero,
+        .quiz-header {
+            padding: 28px 22px;
+        }
+
+        .quiz-card {
+            padding: 22px;
+        }
+
+    }
+
+</style>
+
+
+<div class="quiz-page">
+
+
+{% if not difficulty %}
+
+    <!-- =========================
+         DIFFICULTY SELECTION
+         ========================= -->
+
+    <div class="quiz-hero">
+
+        <h1>
+            📝 English Practice Quiz
+        </h1>
+
+        <p>
+            Test your English and improve your skills.
+        </p>
+
+    </div>
+
+
+    <h2 class="difficulty-title">
+        Choose Your Difficulty
+    </h2>
+
+
+    <div class="difficulty-grid">
+
+
+        <!-- BEGINNER -->
+
+        <a
+            href="{% url 'quiz' %}?difficulty=Beginner"
+            class="difficulty-card beginner"
+        >
+
+            <div class="difficulty-icon">
+                🟢
+            </div>
+
+            <h2>
+                Beginner
+            </h2>
+
+            <p>
+                Basic English grammar,
+                vocabulary and simple sentences.
+            </p>
+
+            <span class="difficulty-button">
+                Start Beginner
+            </span>
+
+        </a>
+
+
+        <!-- MODERATE -->
+
+        <a
+            href="{% url 'quiz' %}?difficulty=Moderate"
+            class="difficulty-card moderate"
+        >
+
+            <div class="difficulty-icon">
+                🟡
+            </div>
+
+            <h2>
+                Moderate
+            </h2>
+
+            <p>
+                Intermediate grammar,
+                sentence correction and vocabulary.
+            </p>
+
+            <span class="difficulty-button">
+                Start Moderate
+            </span>
+
+        </a>
+
+
+        <!-- ADVANCED -->
+
+        <a
+            href="{% url 'quiz' %}?difficulty=Advanced"
+            class="difficulty-card advanced"
+        >
+
+            <div class="difficulty-icon">
+                🔴
+            </div>
+
+            <h2>
+                Advanced
+            </h2>
+
+            <p>
+                Challenging grammar,
+                error detection and advanced English.
+            </p>
+
+            <span class="difficulty-button">
+                Start Advanced
+            </span>
+
+        </a>
+
+    </div>
+
+
+{% else %}
+
+
+    <!-- =========================
+         SELECTED QUIZ
+         ========================= -->
+
+    <div class="quiz-header">
+
+        <h1>
+            📝 English Practice Quiz
+        </h1>
+
+        <p>
+            Answer all 5 questions carefully.
+        </p>
+
+        <span class="difficulty-badge">
+            Difficulty: {{ difficulty }}
+        </span>
+
+    </div>
+
+
+    <form method="post">
+
+        {% csrf_token %}
+
+
+        <div class="quiz-card">
+
+            {% for item in questions %}
+
+                <div class="question">
+
+                    <div class="question-text">
+
+                        <span class="question-number">
+                            {{ forloop.counter }}
+                        </span>
+
+                        {{ item.q }}
+
+                    </div>
+
+
+                    <div class="options">
+
+                        {% for option in item.options %}
+
+                            <label class="option">
+
+                                <input
+                                    type="radio"
+                                    name="q{{ forloop.parentloop.counter0 }}"
+                                    value="{{ option }}"
+                                    required
+                                >
+
+                                <span>
+                                    {{ option }}
+                                </span>
+
+                            </label>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+
+            <div class="submit-area">
+
+                <button
+                    type="submit"
+                    class="submit-button"
+                >
+                    Submit Quiz →
+                </button>
+
+            </div>
+
+        </div>
+
+    </form>
+
+{% endif %}
+
+</div>
+
+{% endblock %}

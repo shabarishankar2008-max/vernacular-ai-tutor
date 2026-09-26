@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="result">
+
+    <h1>Quiz Completed 🎉</h1>
+
+    <h2>{{ score }} / {{ total }}</h2>
+
+    <p>
+        Your score:
+        <strong>{{ percentage }}%</strong>
+    </p>
+
+    <div style="margin-top: 25px;">
+
+        <a class="button" href="{% url 'quiz_review' %}">
+            View My Answers
+        </a>
+
+        <a class="button" href="{% url 'tutor' %}">
+            Practice with AI Tutor
+        </a>
+
+        <a class="button secondary" href="{% url 'dashboard' %}">
+            Dashboard
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

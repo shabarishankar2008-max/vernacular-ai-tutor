@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Welcome, {{ student.name }} 👋</h1>
+<p>Native language: <strong>{{ student.native_language }}</strong> |
+Level: <strong>{{ student.level }}</strong></p>
+
+<div class="score-grid">
+    <div class="score"><span>Grammar</span><strong>{{ student.grammar_score }}%</strong></div>
+    <div class="score"><span>Vocabulary</span><strong>{{ student.vocabulary_score }}%</strong></div>
+    <div class="score"><span>Reading</span><strong>{{ student.reading_score }}%</strong></div>
+    <div class="score"><span>Writing</span><strong>{{ student.writing_score }}%</strong></div>
+    <div class="score"><span>Speaking</span><strong>{{ student.speaking_score }}%</strong></div>
+</div>
+
+<div class="card">
+    <h2>Overall Progress</h2>
+    <div class="progress"><div style="width: {{ student.overall_score }}%"></div></div>
+    <p>{{ student.overall_score }}%</p>
+</div>
+
+<div class="cards">
+    <a class="card link-card" href="{% url 'tutor' %}">
+        <h2>🤖 AI Tutor</h2>
+        <p>Ask grammar, vocabulary and English questions.</p>
+    </a>
+    <a class="card link-card" href="{% url 'quiz' %}">
+        <h2>📝 Take Quiz</h2>
+        <p>Test your English basics.</p>
+    </a>
+</div>
+
+<div class="card">
+    <h2>Recent Quiz Results</h2>
+    {% for result in results %}
+        <p>{{ result.topic }} — {{ result.score }}/{{ result.total }} — {{ result.created_at|date:"d M Y" }}</p>
+    {% empty %}
+        <p>No quiz attempts yet.</p>
+    {% endfor %}
+</div>
+{% endblock %}
